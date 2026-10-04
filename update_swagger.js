@@ -1,37 +1,7 @@
-const path = require('path');
-const swaggerJsdoc = require('swagger-jsdoc');
+const fs = require('fs');
+let swagger = fs.readFileSync('docs/swagger.js', 'utf8');
 
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'FinanceGuide - Personal Finance Coach API',
-      version: '1.0.0',
-      description: 'Backend API for the FinanceGuide B.Tech CSE case study',
-    },
-    servers: [
-      {
-        url: `http://localhost:${process.env.PORT || 8000}`,
-      },
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-  },
-  // Swagger reads the JSDoc comments from these files
-  apis: [path.join(__dirname, '../server.js'), path.join(__dirname, '../routes/*.js')],
-};
-
-const swaggerSpec = swaggerJsdoc(options);
-
-module.exports = swaggerSpec;
-
+const quizDocs = `
 /**
  * @swagger
  * /api/quizzes:
@@ -68,3 +38,9 @@ module.exports = swaggerSpec;
  *       200:
  *         description: Result of the quiz
  */
+`;
+
+if (!swagger.includes('/api/quizzes')) {
+    swagger += quizDocs;
+    fs.writeFileSync('docs/swagger.js', swagger);
+}
