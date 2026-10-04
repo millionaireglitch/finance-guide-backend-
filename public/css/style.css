@@ -1,18 +1,19 @@
 /* CSS Custom Properties (Fintech Palette) */
 :root {
-    --primary: #315C4C;
-    --dark: #18332A;
-    --bg-main: #F7F8F5;
+    /* Vibrant Custom Palette */
+    --primary: #DB5ABA;   /* Magenta */
+    --dark: #370031;      /* Deep Plum */
+    --bg-main: #F4FAFC;   /* Very faint cyan/blue tint for background */
     --card: #FFFFFF;
-    --text-main: #17211D;
-    --text-sec: #6B756F;
-    --success: #2E7D5B;
-    --warning: #D98E04;
-    --danger: #C84C4C;
-    --border: #E3E8E4;
+    --text-main: #370031; /* Deep Plum for text */
+    --text-sec: #BD4089;  /* Deep Pink */
+    --success: #6F9CEB;   /* Blue */
+    --warning: #DB5375;   /* Rose Pink */
+    --danger: #FE5F55;    /* Coral Red */
+    --border: #98B9F2;    /* Light Blue */
 
-    --shadow-sm: 0 2px 8px rgba(24, 51, 42, 0.04);
-    --shadow-md: 0 8px 24px rgba(24, 51, 42, 0.08);
+    --shadow-sm: 0 2px 8px rgba(55, 0, 49, 0.05);
+    --shadow-md: 0 8px 24px rgba(55, 0, 49, 0.1);
     --radius-sm: 8px;
     --radius-md: 12px;
 }
@@ -109,8 +110,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
 /* SIDEBAR */
 .sidebar {
     width: 250px;
-    background: var(--card);
-    border-right: 1px solid var(--border);
+    background: var(--dark); /* Deep Plum */
+    border-right: none;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -122,10 +123,10 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
 }
 .sidebar-brand {
     padding: 24px 20px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.sidebar-brand h3 { color: var(--primary); font-size: 18px; }
-.sidebar-brand p { color: var(--text-sec); font-size: 12px; }
+.sidebar-brand h3 { color: #B5F8FE; font-size: 18px; }
+.sidebar-brand p { color: #98B9F2; font-size: 12px; }
 
 .sidebar-nav {
     flex: 1;
@@ -135,7 +136,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
 .nav-section {
     font-size: 11px;
     font-weight: 600;
-    color: var(--text-sec);
+    color: #B5F8FE;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 15px 20px 5px;
@@ -143,7 +144,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
 .nav-link {
     display: block;
     padding: 10px 20px;
-    color: var(--text-main);
+    color: #FFFFFF;
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
@@ -153,34 +154,35 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
     width: 24px;
     text-align: center;
     margin-right: 8px;
-    color: var(--text-sec);
+    color: #98B9F2;
 }
 .nav-link:hover {
-    background: var(--bg-main);
+    background: rgba(255,255,255,0.05);
 }
 .nav-link.active {
-    background: rgba(49, 92, 76, 0.05);
-    color: var(--primary);
-    border-left-color: var(--primary);
+    background: var(--primary);
+    color: #FFFFFF;
+    border-left-color: #B5F8FE;
 }
 .nav-link.active i {
-    color: var(--primary);
+    color: #FFFFFF;
 }
 .main-dashboard-link {
     font-size: 15px;
     font-weight: 700;
     padding: 15px 20px;
     margin-bottom: 15px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     border-left: none !important;
 }
 .main-dashboard-link i {
-    color: var(--primary);
+    color: #B5F8FE;
     font-size: 18px;
 }
 .sidebar-footer {
     padding: 20px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: #FFFFFF;
 }
 .user-info { margin-bottom: 15px; }
 .user-name { font-weight: 600; font-size: 14px; }

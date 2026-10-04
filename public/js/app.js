@@ -366,8 +366,8 @@ function renderCashFlowChart(transactions) {
                 { 
                     label: 'Income', 
                     data: incomeData, 
-                    borderColor: '#2E7D5B', 
-                    backgroundColor: 'rgba(46, 125, 91, 0.1)', 
+                    borderColor: '#6F9CEB', 
+                    backgroundColor: 'rgba(111, 156, 235, 0.1)', 
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
@@ -377,8 +377,8 @@ function renderCashFlowChart(transactions) {
                 { 
                     label: 'Expenses', 
                     data: expenseData, 
-                    borderColor: '#C84C4C', 
-                    backgroundColor: 'rgba(200, 76, 76, 0.05)', 
+                    borderColor: '#FE5F55', 
+                    backgroundColor: 'rgba(254, 95, 85, 0.05)', 
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
@@ -636,8 +636,8 @@ async function loadNetWorth() {
             datasets: [{
                 label: 'Net Worth',
                 data: dataPoints,
-                borderColor: '#315C4C',
-                backgroundColor: 'rgba(49, 92, 76, 0.1)',
+                borderColor: '#DB5ABA',
+                backgroundColor: 'rgba(219, 90, 186, 0.1)',
                 fill: true,
                 tension: 0.3
             }]
