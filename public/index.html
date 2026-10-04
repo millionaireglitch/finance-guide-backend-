@@ -123,6 +123,13 @@
             <div class="page-container">
                 <!-- ================= DASHBOARD PAGE ================= -->
                 <div id="page-dashboard" class="page active">
+                    <!-- Net Worth Top Card -->
+                    <div class="card special-card mb-4" style="text-align:center; padding: 40px 24px;">
+                        <h3 style="color: var(--text-sec); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Total Net Worth</h3>
+                        <h1 id="dash-nw-val" style="font-size: 48px; margin: 12px 0; color: var(--text-main); font-weight: 700; letter-spacing: -1.5px;">₹0</h1>
+                        <p id="dash-nw-desc" class="text-sm" style="color: var(--info);">Calculating...</p>
+                    </div>
+
                     
                     <!-- 4 Summary Cards -->
                     <div class="summary-grid">
@@ -955,6 +962,7 @@
         </div>
     </div>
 
+    <div id="toast-container"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/app.js"></script>
 </body>

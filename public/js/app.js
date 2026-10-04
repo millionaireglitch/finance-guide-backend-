@@ -150,6 +150,52 @@ function logout() {
     showAuthView();
 }
 
+
+// ================= UTILS & ANIMATIONS =================
+function showToast(message) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="color:var(--warning); margin-right:10px; font-size:16px;"></i> ' + message;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.4s ease forwards';
+        setTimeout(() => toast.remove(), 400);
+    }, 5000);
+}
+
+function animateValue(obj, start, end, duration) {
+    let startTimestamp = null;
+    const isCurrency = obj.id.includes('val') || obj.id.includes('amt') || obj.innerText.includes('₹');
+    
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        // easeOutQuart
+        const easeProgress = 1 - Math.pow(1 - progress, 4);
+        const currentVal = Math.floor(easeProgress * (end - start) + start);
+        
+        if (isCurrency) {
+            obj.innerHTML = '₹' + currentVal.toLocaleString('en-IN');
+        } else {
+            obj.innerHTML = currentVal.toLocaleString('en-IN');
+        }
+        
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            if (isCurrency) obj.innerHTML = '₹' + end.toLocaleString('en-IN');
+            else obj.innerHTML = end.toLocaleString('en-IN');
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
 // ================= API CALLER =================
 async function apiCall(endpoint, method = 'GET', body = null) {
     const options = {
@@ -903,7 +949,7 @@ function initSocket() {
     });
 
     socket.on('overspendingAlert', (data) => {
-        alert(`🚨 OVERSPENDING ALERT!\n\n${data.message}`);
+        showToast("Overspending Alert: " + data.message);
         if (document.getElementById('page-alerts').classList.contains('active')) loadAlerts();
     });
 }
