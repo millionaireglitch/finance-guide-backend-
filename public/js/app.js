@@ -746,7 +746,7 @@ async function loadTips() {
         else if (cat.includes('book')) badgeColor = 'var(--warning)'; // Gold color for books
         
         list.innerHTML += `
-            <div class="tip-item">
+            <div class="tip-item focus-read-card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                     <span style="background:${badgeColor}; color:white; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:600;">${t.category.toUpperCase()}</span>
                 </div>
@@ -1002,3 +1002,21 @@ function closeOnboarding() {
         navigateTo('stocks');
     }
 }
+
+
+// ================= FOCUS READ LOGIC =================
+document.addEventListener('click', function(e) {
+    const focusCard = e.target.closest('.focus-read-card');
+    if (focusCard) {
+        if (focusCard.classList.contains('focused')) {
+            focusCard.classList.remove('focused');
+            return;
+        }
+        const parent = focusCard.parentElement;
+        parent.querySelectorAll('.focus-read-card').forEach(c => c.classList.remove('focused'));
+        focusCard.classList.add('focused');
+        setTimeout(() => {
+            focusCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+    }
+});

@@ -166,7 +166,7 @@
                         </div>
 
                         <!-- Budget Status -->
-                        <div class="card">
+                        <div class="card focus-read-card">
                             <div class="card-header">
                                 <h2>Budget Status</h2>
                             </div>
@@ -178,7 +178,7 @@
 
                     <div class="dashboard-grid-secondary">
                         <!-- Recent Transactions -->
-                        <div class="card">
+                        <div class="card focus-read-card">
                             <div class="card-header">
                                 <h2>Recent Transactions</h2>
                                 <button class="btn text-btn" onclick="navigateTo('transactions')">View all →</button>
@@ -202,7 +202,7 @@
 
                         <div class="dashboard-sidebar-cards">
                             <!-- Assets & Debts summary -->
-                            <div class="card">
+                            <div class="card focus-read-card">
                                 <h2>Financial Position</h2>
                                 <div class="position-row mt-3">
                                     <span>TOTAL ASSETS</span>
@@ -227,7 +227,7 @@
                             </div>
 
                             <!-- Alerts mini -->
-                            <div class="card">
+                            <div class="card focus-read-card">
                                 <h2>Alerts</h2>
                                 <div id="dash-alerts-container" class="mt-3">
                                     <!-- Loaded dynamically -->
@@ -235,7 +235,7 @@
                             </div>
 
                             <!-- Financial Tip mini -->
-                            <div class="card">
+                            <div class="card focus-read-card">
                                 <h2>Daily Hack</h2>
                                 <div id="dash-tip-container" class="mt-2">
                                     <p class="text-sm">Loading tip...</p>
@@ -254,7 +254,7 @@
                         </div>
                         <button class="btn primary-btn" onclick="openModal('modal-transaction')">+ Add Transaction</button>
                     </div>
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -281,7 +281,7 @@
                         </div>
                         <button class="btn primary-btn" onclick="openModal('modal-income')">+ Add Income</button>
                     </div>
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -307,7 +307,7 @@
                         </div>
                         <button class="btn primary-btn" onclick="openModal('modal-expense')">+ Add Expense</button>
                     </div>
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -334,7 +334,7 @@
                         <button class="btn primary-btn" onclick="openModal('modal-budget')">+ Add Budget</button>
                     </div>
                     
-                    <div class="summary-grid mb-4">
+                    <div class="summary-grid mb-4 focus-container">
                         <div class="summary-card">
                             <span class="card-label">Total Monthly Income</span>
                             <h3 id="budget-page-income" class="text-success">₹0</h3>
@@ -349,7 +349,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <h3 class="mb-3">Category Budgets</h3>
                         <div id="page-budgets-list" class="budget-grid">
                             <!-- Loaded dynamically -->
@@ -366,7 +366,7 @@
                         </div>
                         <button class="btn primary-btn" onclick="openModal('modal-asset')">+ Add Asset</button>
                     </div>
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <div class="position-row highlight mb-4 p-3 bg-light rounded">
                             <span>Total Assets</span>
                             <strong id="page-assets-total" class="text-success">₹0</strong>
@@ -396,7 +396,7 @@
                         </div>
                         <button class="btn primary-btn" onclick="openModal('modal-debt')">+ Add Debt</button>
                     </div>
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <div class="position-row highlight mb-4 p-3 bg-light rounded">
                             <span>Total Debts</span>
                             <strong id="page-debts-total" class="text-danger">₹0</strong>
@@ -428,7 +428,7 @@
                     </div>
                     
                     <div class="dashboard-grid-main">
-                        <div class="card">
+                        <div class="card focus-read-card">
                             <form id="sim-form-full">
                                 <div class="form-group">
                                     <label>Initial Investment (₹)</label>
@@ -454,7 +454,7 @@
                             </form>
                         </div>
                         
-                        <div id="sim-full-result" class="card" style="display: none;">
+                        <div id="sim-full-result" class="card focus-read-card" style="display: none;">
                             <h3 class="mb-4">Simulation Results</h3>
                             
                             <div class="position-row highlight mb-3">
@@ -504,7 +504,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <h3>Net Worth History</h3>
                         <div class="chart-container mt-4">
                             <canvas id="nwHistoryChart"></canvas>
@@ -587,7 +587,7 @@
                         </div>
                     </div>
                     
-                    <div class="card mb-4" style="border-left: 4px solid var(--danger);">
+                    <div class="card focus-read-card mb-4" style="border-left: 4px solid var(--danger);">
                         <h3 class="text-danger mb-2"><i class="fa-solid fa-triangle-exclamation"></i> The Harsh Reality</h3>
                         <p><strong>1. You will not get rich quick.</strong> Stock market investing is a decades-long game of compound interest. Anyone promising to double your money in a month is running a scam.</p>
                         <p class="mt-2"><strong>2. Stay away from F&O (Futures & Options).</strong> SEBI officially reported that 9 out of 10 retail traders lose money in F&O. As a beginner, strictly stick to equity delivery (buying and holding shares).</p>
@@ -595,22 +595,22 @@
 
                     <h3 class="mb-3">Core Concepts You Must Know</h3>
                     <div class="summary-grid mb-4">
-                        <div class="card">
-                            <h4>1. Demat & Trading Account</h4>
+                        <div class="card focus-read-card">
+                            focus-replace-mark1
                             <p class="text-sm text-muted mt-2">You cannot buy shares directly from your SBI or Kotak bank app efficiently. You need a verified broker (like Zerodha, Groww, or Upstox) to open a Demat account which digitally holds your shares.</p>
                         </div>
-                        <div class="card">
-                            <h4>2. The Nifty 50</h4>
+                        <div class="card focus-read-card">
+                            focus-replace-mark2
                             <p class="text-sm text-muted mt-2">Instead of betting on one risky company, you can buy a tiny piece of the top 50 largest companies in India all at once. This is called an Index Fund. It is the safest way to start your journey.</p>
                         </div>
-                        <div class="card">
-                            <h4>3. SIP vs. Lumpsum</h4>
+                        <div class="card focus-read-card">
+                            focus-replace-mark3
                             <p class="text-sm text-muted mt-2">SIP (Systematic Investment Plan) means automatically investing a fixed amount (e.g. ₹500) every month regardless of market crashes. It removes emotion and averages out your buying price.</p>
                         </div>
                     </div>
 
                     <h3 class="mb-3">Your Step-by-Step Action Plan</h3>
-                    <div class="card">
+                    <div class="card focus-read-card">
                         <div style="display:flex; margin-bottom:20px;">
                             <div style="background:var(--primary); color:white; border-radius:50%; width:35px; height:35px; display:flex; align-items:center; justify-content:center; margin-right:15px; flex-shrink:0; font-weight:bold;">1</div>
                             <div>
