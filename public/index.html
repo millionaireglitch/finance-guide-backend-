@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -70,25 +72,27 @@
             </div>
             
             <nav class="sidebar-nav">
-                <div class="nav-section">OVERVIEW</div>
-                <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
+                <!-- Highlighted Main Dashboard -->
+                <a href="#" class="nav-link active main-dashboard-link" data-page="dashboard">
+                    <i class="fa-solid fa-border-all"></i> Main Dashboard
+                </a>
                 
-                <div class="nav-section">MONEY</div>
-                <a href="#" class="nav-link" data-page="transactions">Transactions</a>
-                <a href="#" class="nav-link" data-page="income">Income</a>
-                <a href="#" class="nav-link" data-page="expenses">Expenses</a>
-                <a href="#" class="nav-link" data-page="budgets">Budgets</a>
+                <div class="nav-section">TRACKING</div>
+                <a href="#" class="nav-link" data-page="transactions"><i class="fa-solid fa-receipt"></i> Transactions</a>
+                <a href="#" class="nav-link" data-page="income"><i class="fa-solid fa-arrow-turn-up"></i> Income</a>
+                <a href="#" class="nav-link" data-page="expenses"><i class="fa-solid fa-arrow-turn-down"></i> Expenses</a>
+                <a href="#" class="nav-link" data-page="budgets"><i class="fa-solid fa-chart-pie"></i> Budgets</a>
                 
                 <div class="nav-section">WEALTH</div>
-                <a href="#" class="nav-link" data-page="assets">Assets</a>
-                <a href="#" class="nav-link" data-page="debts">Debts</a>
-                <a href="#" class="nav-link" data-page="investments">Investments</a>
-                <a href="#" class="nav-link" data-page="net-worth">Net Worth</a>
+                <a href="#" class="nav-link" data-page="assets"><i class="fa-solid fa-building-columns"></i> Assets</a>
+                <a href="#" class="nav-link" data-page="debts"><i class="fa-solid fa-credit-card"></i> Debts</a>
+                <a href="#" class="nav-link" data-page="investments"><i class="fa-solid fa-seedling"></i> Investments</a>
+                <a href="#" class="nav-link" data-page="net-worth"><i class="fa-solid fa-scale-balanced"></i> Net Worth</a>
                 
-                <div class="nav-section">INSIGHTS</div>
-                <a href="#" class="nav-link" data-page="alerts">Alerts</a>
-                <a href="#" class="nav-link" data-page="tips">Discover Hacks</a>
-                <a href="#" class="nav-link" data-page="laws">Money Laws</a>
+                <div class="nav-section">INSIGHTS & RULES</div>
+                <a href="#" class="nav-link" data-page="alerts"><i class="fa-solid fa-bell"></i> Alerts</a>
+                <a href="#" class="nav-link" data-page="tips"><i class="fa-solid fa-lightbulb"></i> Discover Hacks</a>
+                <a href="#" class="nav-link" data-page="laws"><i class="fa-solid fa-book-open"></i> Money Laws</a>
             </nav>
             
             <div class="sidebar-footer">

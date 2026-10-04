@@ -149,6 +149,12 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
     font-size: 14px;
     border-left: 3px solid transparent;
 }
+.nav-link i {
+    width: 24px;
+    text-align: center;
+    margin-right: 8px;
+    color: var(--text-sec);
+}
 .nav-link:hover {
     background: var(--bg-main);
 }
@@ -156,6 +162,21 @@ hr { border: none; border-top: 1px solid var(--border); margin: 15px 0; }
     background: rgba(49, 92, 76, 0.05);
     color: var(--primary);
     border-left-color: var(--primary);
+}
+.nav-link.active i {
+    color: var(--primary);
+}
+.main-dashboard-link {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+    border-left: none !important;
+}
+.main-dashboard-link i {
+    color: var(--primary);
+    font-size: 18px;
 }
 .sidebar-footer {
     padding: 20px;
