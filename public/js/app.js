@@ -115,6 +115,8 @@ async function handleAuth(url, body) {
             user = { id: data.id, name: data.name, email: data.email, role: data.role };
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
+            // Force onboarding on every explicit login for demo purposes
+            localStorage.removeItem('plan_' + user.email);
             showApp();
         } else {
             document.getElementById('auth-error').innerText = responseData.message || 'Authentication failed';
