@@ -949,4 +949,10 @@ function closeOnboarding() {
     document.getElementById('onboarding-wizard').style.display = 'none';
     const plan = localStorage.getItem('plan_' + user.email);
     document.getElementById('sidebar-user-role').innerHTML = `${user.role} &bull; <strong style="color:var(--warning)">${plan}</strong>`;
+    
+    // Feature redirection logic
+    const futureFeature = document.getElementById('ob-future').value;
+    if (futureFeature === 'ai_stock') {
+        navigateTo('stocks');
+    }
 }
