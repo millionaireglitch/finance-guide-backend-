@@ -252,6 +252,14 @@ async function loadDashboard() {
     document.getElementById('dash-networth').innerText = formatMoney(netWorth);
     document.getElementById('dash-pos-networth').innerText = formatMoney(netWorth);
 
+    // Update massive top card
+    const dashNwVal = document.getElementById('dash-nw-val');
+    const dashNwDesc = document.getElementById('dash-nw-desc');
+    if (dashNwVal) {
+        animateValue(dashNwVal, 0, netWorth, 1000);
+        if(dashNwDesc) dashNwDesc.innerText = netWorth >= 0 ? 'Your financial standing is looking good.' : 'Your liabilities exceed your assets.';
+    }
+
     // 2. Fetch Assets & Debts Total
     const assetsRes = await apiCall('/assets');
     const debtsRes = await apiCall('/debts');
