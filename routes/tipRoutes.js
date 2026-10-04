@@ -1,7 +1,8 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { createTip, getTips } = require('../controllers/tipController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
+const { authorize } = require('../middleware/roleMiddleware');
 const { validate } = require('../middleware/validationMiddleware');
 
 const router = express.Router();
@@ -84,7 +85,7 @@ router.get('/', getTips);
  */
 router.post(
   '/',
-  admin,
+  authorize('admin'),
   [
     body('title').trim().notEmpty().withMessage('Title is required'),
     body('category').trim().notEmpty().withMessage('Category is required'),
