@@ -58,6 +58,7 @@ function showApp() {
         document.getElementById('add-tip-btn').style.display = 'block';
     }
 
+    checkOnboarding();
     initSocket();
     navigateTo('dashboard');
 }
@@ -902,9 +903,50 @@ function initSocket() {
     });
 
     socket.on('overspendingAlert', (data) => {
-        // Simple native alert or we could build a toast
         alert(`🚨 OVERSPENDING ALERT!\n\n${data.message}`);
-        // Refresh alerts if on that page
         if (document.getElementById('page-alerts').classList.contains('active')) loadAlerts();
     });
+}
+
+// ================= ONBOARDING WIZARD =================
+function checkOnboarding() {
+    const plan = localStorage.getItem('plan_' + user.email);
+    if (!plan) {
+        document.getElementById('onboarding-wizard').style.display = 'flex';
+    } else {
+        document.getElementById('sidebar-user-role').innerHTML = `${user.role} &bull; <strong style="color:var(--warning)">${plan}</strong>`;
+    }
+}
+
+function obNext(step) {
+    document.querySelectorAll('[id^="ob-step-"]').forEach(el => el.style.display = 'none');
+    document.getElementById('ob-step-' + step).style.display = 'block';
+}
+
+function obFinish() {
+    const status = document.getElementById('ob-status').value;
+    const title = document.getElementById('ob-plan-title');
+    const desc = document.getElementById('ob-plan-desc');
+    
+    let planName = '';
+    if (status === 'beginner') {
+        planName = 'Free Plan';
+        title.innerText = 'Free Plan Unlocked!';
+        title.style.color = 'var(--primary)';
+        desc.innerText = 'Since you are just starting out, we assigned you the Free Plan. You get full access to expense tracking, hacks, and money laws!';
+    } else {
+        planName = 'Premium Plan 👑';
+        title.innerText = 'Premium Plan Unlocked! 👑';
+        title.style.color = 'var(--warning)';
+        desc.innerText = 'Since you are generating income, we upgraded you to Premium! You will get priority access to our upcoming tax algorithms and AI features.';
+    }
+    
+    localStorage.setItem('plan_' + user.email, planName);
+    obNext(5);
+}
+
+function closeOnboarding() {
+    document.getElementById('onboarding-wizard').style.display = 'none';
+    const plan = localStorage.getItem('plan_' + user.email);
+    document.getElementById('sidebar-user-role').innerHTML = `${user.role} &bull; <strong style="color:var(--warning)">${plan}</strong>`;
 }
