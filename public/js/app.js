@@ -358,23 +358,65 @@ function renderCashFlowChart(transactions) {
     });
 
     dashChartInst = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels,
             datasets: [
-                { label: 'Income', data: incomeData, backgroundColor: '#2E7D5B', borderRadius: 4 },
-                { label: 'Expenses', data: expenseData, backgroundColor: '#C84C4C', borderRadius: 4 }
+                { 
+                    label: 'Income', 
+                    data: incomeData, 
+                    borderColor: '#2E7D5B', 
+                    backgroundColor: 'rgba(46, 125, 91, 0.1)', 
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                },
+                { 
+                    label: 'Expenses', 
+                    data: expenseData, 
+                    borderColor: '#C84C4C', 
+                    backgroundColor: 'rgba(200, 76, 76, 0.05)', 
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
             scales: {
-                y: { beginAtZero: true, grid: { color: '#E3E8E4' } },
-                x: { grid: { display: false } }
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: 'rgba(0,0,0,0.04)' },
+                    border: { display: false }
+                },
+                x: { 
+                    grid: { display: false },
+                    border: { display: false }
+                }
             },
             plugins: {
-                legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } }
+                legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8, font: { family: 'Inter', size: 13 } } },
+                tooltip: {
+                    backgroundColor: 'rgba(24, 51, 42, 0.9)',
+                    padding: 12,
+                    titleFont: { size: 14, family: 'Inter' },
+                    bodyFont: { size: 13, family: 'Inter' },
+                    callbacks: {
+                        label: function(context) {
+                            return ' ' + context.dataset.label + ': ₹' + context.parsed.y.toLocaleString('en-IN');
+                        }
+                    }
+                }
             }
         }
     });
