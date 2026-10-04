@@ -370,3 +370,26 @@ input:focus, select:focus {
 }
 .header-left h1 { font-size: 32px; letter-spacing: -1px; }
 .header-left p { color: var(--text-sec); margin-top: 6px; }
+
+/* DASHBOARD GRIDS */
+.dashboard-grid-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+.dashboard-grid-secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.dashboard-sidebar-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+@media (max-width: 992px) {
+    .dashboard-grid-main {
+        grid-template-columns: 1fr;
+    }
+}
