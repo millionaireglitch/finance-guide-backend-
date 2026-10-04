@@ -15,7 +15,7 @@
 
     --shadow-soft: 0 12px 36px rgba(36, 24, 48, 0.03);
     --shadow-hover: 0 20px 48px rgba(36, 24, 48, 0.07);
-    --border-light: 1px solid rgba(157, 124, 198, 0.12);
+    --border-light: 1px solid var(--info);
     
     --radius-lg: 20px;
     --radius-md: 16px;
