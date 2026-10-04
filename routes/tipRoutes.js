@@ -1,8 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { getTips, createTip } = require('../controllers/tipController');
-const { protect } = require('../middleware/authMiddleware');
-const { authorize } = require('../middleware/roleMiddleware');
+const { createTip, getTips } = require('../controllers/tipController');
+const { protect, admin } = require('../middleware/authMiddleware');
 const { validate } = require('../middleware/validationMiddleware');
 
 const router = express.Router();
@@ -13,30 +12,53 @@ router.use(protect);
  * @swagger
  * tags:
  *   name: Tips
- *   description: Financial tips (anyone logged in can read, only admin can create)
+ *   description: Financial tips, hacks and myths
  */
+
+/**
+ * @swagger
+ * /api/tips/ai-generate:
+ *   get:
+ *     summary: AI-powered saving tips API
+ *     description: Analyzes user spending (mocked) to return a personalized saving tip.
+ *     tags: [Tips]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns an AI-generated tip
+ */
+router.get('/ai-generate', async (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "AI Tip generated successfully",
+        data: {
+            title: "AI Spending Insight",
+            category: "AI Suggestion",
+            content: "Based on your recent transaction velocity, our AI algorithm recommends setting aside an extra ₹2000 this month into your emergency fund."
+        }
+    });
+});
 
 /**
  * @swagger
  * /api/tips:
  *   get:
- *     summary: Get financial tips
+ *     summary: Get all tips
  *     tags: [Tips]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: category
- *         required: false
- *         schema:
- *           type: string
- *           example: Savings
- *         description: Optional category filter
  *     responses:
  *       200:
  *         description: List of tips
+ */
+router.get('/', getTips);
+
+/**
+ * @swagger
+ * /api/tips:
  *   post:
- *     summary: Create a financial tip (ADMIN ONLY)
+ *     summary: Create a new tip (Admin only)
  *     tags: [Tips]
  *     security:
  *       - bearerAuth: []
@@ -46,34 +68,27 @@ router.use(protect);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [title, content, category]
+ *             required: [title, category, content]
  *             properties:
  *               title:
  *                 type: string
- *               content:
- *                 type: string
  *               category:
  *                 type: string
- *             example:
- *               title: Emergency Fund
- *               content: Maintain an emergency fund for unexpected expenses.
- *               category: Savings
+ *               content:
+ *                 type: string
  *     responses:
  *       201:
- *         description: Tip created successfully
- *       400:
- *         description: Invalid input
+ *         description: Tip created
  *       403:
- *         description: Forbidden - only admin can create tips
+ *         description: Not authorized as admin
  */
-router.get('/', getTips);
 router.post(
   '/',
-  authorize('admin'),
+  admin,
   [
     body('title').trim().notEmpty().withMessage('Title is required'),
-    body('content').trim().notEmpty().withMessage('Content is required'),
     body('category').trim().notEmpty().withMessage('Category is required'),
+    body('content').trim().notEmpty().withMessage('Content is required'),
   ],
   validate,
   createTip

@@ -67,6 +67,7 @@ app.use('/api/alerts', require('./routes/alertRoutes'));
 app.use('/api/tips', require('./routes/tipRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/quizzes', require('./routes/quizRoutes'));
+app.use('/api/banks', require('./routes/bankRoutes'));
 
 // Error handling (must be after all routes)
 app.use(notFound);
