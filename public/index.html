@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceGuide - Personal Finance Coach</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- AUTHENTICATION VIEW -->
+    <div id="auth-view" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>FinanceGuide</h2>
+                <p>Take control of your finances.</p>
+                <small>Track spending, manage budgets and understand your financial position.</small>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="tab active" onclick="switchAuth('login')">Sign In</button>
+                <button class="tab" onclick="switchAuth('register')">Create an account</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Sign In</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" style="display: none;">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Create Account</button>
+            </form>
+
+            <p id="auth-error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <!-- APP LAYOUT -->
+    <div id="app-layout" class="app-layout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <h3>FinanceGuide</h3>
+                <p>Personal Finance Coach</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">OVERVIEW</div>
+                <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
+                
+                <div class="nav-section">MONEY</div>
+                <a href="#" class="nav-link" data-page="transactions">Transactions</a>
+                <a href="#" class="nav-link" data-page="income">Income</a>
+                <a href="#" class="nav-link" data-page="expenses">Expenses</a>
+                <a href="#" class="nav-link" data-page="budgets">Budgets</a>
+                
+                <div class="nav-section">WEALTH</div>
+                <a href="#" class="nav-link" data-page="assets">Assets</a>
+                <a href="#" class="nav-link" data-page="debts">Debts</a>
+                <a href="#" class="nav-link" data-page="investments">Investments</a>
+                <a href="#" class="nav-link" data-page="net-worth">Net Worth</a>
+                
+                <div class="nav-section">INSIGHTS</div>
+                <a href="#" class="nav-link" data-page="alerts">Alerts</a>
+                <a href="#" class="nav-link" data-page="tips">Discover Hacks</a>
+                <a href="#" class="nav-link" data-page="laws">Money Laws</a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-name" id="sidebar-user-name">User Name</div>
+                    <div class="user-role" id="sidebar-user-role">Role</div>
+                </div>
+                <button onclick="logout()" class="btn outline-btn full-width text-sm">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+                    <div>
+                        <h1 id="greeting-text">Good afternoon 👋</h1>
+                        <p class="subtitle" id="header-subtitle">Here's your financial snapshot for this month.</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="icon-btn" onclick="navigateTo('alerts')">🔔</button>
+                </div>
+            </header>
+
+            <div class="page-container">
+                <!-- ================= DASHBOARD PAGE ================= -->
+                <div id="page-dashboard" class="page active">
+                    
+                    <!-- 4 Summary Cards -->
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <span class="card-label">Net Worth</span>
+                            <h3 id="dash-networth">₹0</h3>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-label">Monthly Income</span>
+                            <h3 id="dash-income" class="text-success">₹0</h3>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-label">Monthly Expenses</span>
+                            <h3 id="dash-expenses" class="text-danger">₹0</h3>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-label">Available Savings</span>
+                            <h3 id="dash-savings">₹0</h3>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid-main">
+                        <!-- Cash Flow Chart -->
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h2>Cash Flow</h2>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="cashFlowChart"></canvas>
+                                <div id="cashFlowEmpty" class="empty-state" style="display: none;">
+                                    <p>No transactions yet to generate chart.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Budget Status -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Budget Status</h2>
+                            </div>
+                            <div id="dash-budgets-list" class="budget-progress-list">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid-secondary">
+                        <!-- Recent Transactions -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Recent Transactions</h2>
+                                <button class="btn text-btn" onclick="navigateTo('transactions')">View all →</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table" id="dash-tx-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Category</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dash-tx-tbody">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-sidebar-cards">
+                            <!-- Assets & Debts summary -->
+                            <div class="card">
+                                <h2>Financial Position</h2>
+                                <div class="position-row mt-3">
+                                    <span>TOTAL ASSETS</span>
+                                    <strong id="dash-total-assets">₹0</strong>
+                                </div>
+                                <div class="position-row">
+                                    <span>TOTAL DEBTS</span>
+                                    <strong id="dash-total-debts">₹0</strong>
+                                </div>
+                                <hr>
+                                <div class="position-row highlight">
+                                    <span>NET WORTH</span>
+                                    <strong id="dash-pos-networth">₹0</strong>
+                                </div>
+                            </div>
+
+                            <!-- Investment Simulator mini card -->
+                            <div class="card primary-bg-card">
+                                <h2>Investment Simulator</h2>
+                                <p class="text-sm mt-2 mb-3 text-white-70">See how your money could grow over time.</p>
+                                <button class="btn secondary-btn full-width" onclick="navigateTo('investments')">Open Simulator →</button>
+                            </div>
+
+                            <!-- Alerts mini -->
+                            <div class="card">
+                                <h2>Alerts</h2>
+                                <div id="dash-alerts-container" class="mt-3">
+                                    <!-- Loaded dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Financial Tip mini -->
+                            <div class="card">
+                                <h2>Daily Hack</h2>
+                                <div id="dash-tip-container" class="mt-2">
+                                    <p class="text-sm">Loading tip...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= TRANSACTIONS PAGE ================= -->
+                <div id="page-transactions" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Transactions</h2>
+                            <p class="subtitle">Track your income and expenses.</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="openModal('modal-transaction')">+ Add Transaction</button>
+                    </div>
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="page-tx-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= INCOME PAGE ================= -->
+                <div id="page-income" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Income</h2>
+                            <p class="subtitle">Manage your income sources.</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="openModal('modal-income')">+ Add Income</button>
+                    </div>
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Source</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="page-income-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= EXPENSES PAGE ================= -->
+                <div id="page-expenses" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Expenses</h2>
+                            <p class="subtitle">Manage your spending records.</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="openModal('modal-expense')">+ Add Expense</button>
+                    </div>
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="page-expenses-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= BUDGETS PAGE ================= -->
+                <div id="page-budgets" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Budgets</h2>
+                            <p class="subtitle">Manage your monthly spending limits.</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="openModal('modal-budget')">+ Add Budget</button>
+                    </div>
+                    
+                    <div class="summary-grid mb-4">
+                        <div class="summary-card">
+                            <span class="card-label">Total Monthly Income</span>
+                            <h3 id="budget-page-income" class="text-success">₹0</h3>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-label">Total Spent</span>
+                            <h3 id="budget-page-spent" class="text-danger">₹0</h3>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-label">Remaining</span>
+                            <h3 id="budget-page-remaining">₹0</h3>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="mb-3">Category Budgets</h3>
+                        <div id="page-budgets-list" class="budget-grid">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= ASSETS PAGE ================= -->
+                <div id="page-assets" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Assets</h2>
+                            <p class="subtitle">Track your banks, properties, and other assets.</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="openModal('modal-asset')">+ Add Asset</button>
+                    </div>
+                    <div class="card">
+                        <div class="position-row highlight mb-4 p-3 bg-light rounded">
+                            <span>Total Assets</span>
+                            <strong id="page-assets-total" class="text-success">₹0</strong>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th class="text-right">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="page-assets-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= DEBTS PAGE ================= -->
+                <div id="page-debts" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Debts</h2>
+                            <p class="subtitle">Manage your loans and liabilities.</p>
+                        </div>
+                        <button class="btn primary-btn" onclick="openModal('modal-debt')">+ Add Debt</button>
+                    </div>
+                    <div class="card">
+                        <div class="position-row highlight mb-4 p-3 bg-light rounded">
+                            <span>Total Debts</span>
+                            <strong id="page-debts-total" class="text-danger">₹0</strong>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Interest Rate</th>
+                                        <th>Due Date</th>
+                                        <th class="text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="page-debts-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= INVESTMENTS PAGE ================= -->
+                <div id="page-investments" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Investment Simulator</h2>
+                            <p class="subtitle">Estimate how your investment could grow over time.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-grid-main">
+                        <div class="card">
+                            <form id="sim-form-full">
+                                <div class="form-group">
+                                    <label>Initial Investment (₹)</label>
+                                    <input type="number" id="sim-full-initial" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Monthly Contribution (₹)</label>
+                                    <input type="number" id="sim-full-monthly" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Investment Period (Years)</label>
+                                    <input type="number" id="sim-full-years" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Risk Profile</label>
+                                    <select id="sim-full-risk" required>
+                                        <option value="conservative">Conservative (Lower risk & return)</option>
+                                        <option value="moderate" selected>Moderate (Balanced)</option>
+                                        <option value="aggressive">Aggressive (Higher risk & return)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn primary-btn">Calculate Growth</button>
+                            </form>
+                        </div>
+                        
+                        <div id="sim-full-result" class="card" style="display: none;">
+                            <h3 class="mb-4">Simulation Results</h3>
+                            
+                            <div class="position-row highlight mb-3">
+                                <span>Projected Value</span>
+                                <strong id="sim-full-proj" class="text-success text-xl">₹0</strong>
+                            </div>
+                            <div class="position-row mb-2">
+                                <span>Total Invested</span>
+                                <strong id="sim-full-inv">₹0</strong>
+                            </div>
+                            <div class="position-row mb-2">
+                                <span>Estimated Growth</span>
+                                <strong id="sim-full-growth" class="text-success">₹0</strong>
+                            </div>
+                            <div class="position-row">
+                                <span>Risk Profile</span>
+                                <strong id="sim-full-risk-val">Moderate</strong>
+                            </div>
+                            
+                            <p class="text-sm text-muted mt-4">Simulation only. Investment returns are not guaranteed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= NET WORTH PAGE ================= -->
+                <div id="page-net-worth" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Net Worth</h2>
+                            <p class="subtitle">Your overall financial standing.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4 text-center p-5">
+                        <p class="card-label">Current Net Worth</p>
+                        <h1 id="page-nw-total" class="text-xxl mb-4">₹0</h1>
+                        
+                        <div class="dashboard-grid-main" style="max-width: 600px; margin: 0 auto;">
+                            <div class="p-3 bg-light rounded text-left">
+                                <span class="text-sm">Total Assets</span>
+                                <h3 id="page-nw-assets" class="text-success mt-1">₹0</h3>
+                            </div>
+                            <div class="p-3 bg-light rounded text-left">
+                                <span class="text-sm">Total Debts</span>
+                                <h3 id="page-nw-debts" class="text-danger mt-1">₹0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Net Worth History</h3>
+                        <div class="chart-container mt-4">
+                            <canvas id="nwHistoryChart"></canvas>
+                            <div id="nwHistoryEmpty" class="empty-state" style="display: none;">
+                                <p>No historical data available yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= ALERTS PAGE ================= -->
+                <div id="page-alerts" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Alerts</h2>
+                            <p class="subtitle">Stay on top of your spending limits.</p>
+                        </div>
+                        <button class="btn outline-btn" onclick="checkAlerts()">Check for Overspending</button>
+                    </div>
+                    
+                    <div id="page-alerts-list" class="alerts-grid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- ================= TIPS PAGE ================= -->
+                <div id="page-tips" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Discover Hacks</h2>
+                            <p class="subtitle">Debunk myths and learn smart saving strategies.</p>
+                        </div>
+                        <button id="add-tip-btn" class="btn primary-btn" style="display:none;" onclick="openModal('modal-tip')">+ Add Hack</button>
+                    </div>
+                    
+                    <div id="page-tips-list" class="tips-grid">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- ================= MONEY LAWS PAGE ================= -->
+                <div id="page-laws" class="page">
+                    <div class="page-header">
+                        <div>
+                            <h2>Money Laws</h2>
+                            <p class="subtitle">Interactive financial rules of thumb to guide your wealth building.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-grid">
+                        <!-- Card 1: 50/30/20 -->
+                        <div class="card law-card" onclick="openModal('modal-law-503020')">
+                            <h3>50/30/20 Rule</h3>
+                            <p class="text-sm mt-2 text-muted">Divide your income into Needs, Wants, and Savings.</p>
+                            <button class="btn text-btn mt-3">Calculate yours →</button>
+                        </div>
+                        
+                        <!-- Card 2: Rule of 72 -->
+                        <div class="card law-card" onclick="openModal('modal-law-72')">
+                            <h3>The Rule of 72</h3>
+                            <p class="text-sm mt-2 text-muted">Find out exactly how long it takes to double your money.</p>
+                            <button class="btn text-btn mt-3">Calculate yours →</button>
+                        </div>
+
+                        <!-- Card 3: 4% Rule -->
+                        <div class="card law-card" onclick="openModal('modal-law-4percent')">
+                            <h3>The 4% Rule (FIRE)</h3>
+                            <p class="text-sm mt-2 text-muted">Calculate the exact portfolio size needed to retire.</p>
+                            <button class="btn text-btn mt-3">Calculate yours →</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- End Page Container -->
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Transaction Modal -->
+    <div id="modal-transaction" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-transaction')">&times;</span>
+            <h3>Add Transaction</h3>
+            <form id="form-transaction">
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="modal-tx-type" required>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="modal-tx-cat" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="modal-tx-desc">
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="modal-tx-amt" required>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="modal-tx-date" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Income Modal -->
+    <div id="modal-income" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-income')">&times;</span>
+            <h3>Add Income</h3>
+            <form id="form-income">
+                <div class="form-group">
+                    <label>Source</label>
+                    <input type="text" id="modal-inc-source" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="modal-inc-desc">
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="modal-inc-amt" required>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="modal-inc-date" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expense Modal -->
+    <div id="modal-expense" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-expense')">&times;</span>
+            <h3>Add Expense</h3>
+            <form id="form-expense">
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="modal-exp-cat" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="modal-exp-desc">
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="modal-exp-amt" required>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="modal-exp-date" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Budget Modal -->
+    <div id="modal-budget" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-budget')">&times;</span>
+            <h3>Add Budget</h3>
+            <form id="form-budget">
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="modal-bud-cat" required>
+                </div>
+                <div class="form-group">
+                    <label>Monthly Limit (₹)</label>
+                    <input type="number" id="modal-bud-limit" required>
+                </div>
+                <div class="form-group">
+                    <label>Month</label>
+                    <input type="month" id="modal-bud-month" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Asset Modal -->
+    <div id="modal-asset" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-asset')">&times;</span>
+            <h3>Add Asset</h3>
+            <form id="form-asset">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="modal-asset-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input type="text" id="modal-asset-type" placeholder="e.g. Bank, Property" required>
+                </div>
+                <div class="form-group">
+                    <label>Value (₹)</label>
+                    <input type="number" id="modal-asset-val" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Debt Modal -->
+    <div id="modal-debt" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-debt')">&times;</span>
+            <h3>Add Debt</h3>
+            <form id="form-debt">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="modal-debt-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount (₹)</label>
+                    <input type="number" id="modal-debt-amt" required>
+                </div>
+                <div class="form-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="modal-debt-int" value="0">
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tip Modal (Admin Only) -->
+    <div id="modal-tip" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-tip')">&times;</span>
+            <h3>Publish Hack / Myth</h3>
+            <form id="form-tip">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="modal-tip-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="modal-tip-cat" required>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="modal-tip-content" rows="4" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--border-light);" required></textarea>
+                </div>
+                <button type="submit" class="btn primary-btn full-width mt-3">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Law: 50/30/20 Modal -->
+    <div id="modal-law-503020" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-law-503020')">&times;</span>
+            <h3>50/30/20 Rule</h3>
+            <p class="text-sm text-muted mb-3">Enter your monthly after-tax income to see your ideal budget.</p>
+            <div class="form-group">
+                <label>Monthly Income (₹)</label>
+                <input type="number" id="law-50-input" placeholder="e.g., 50000">
+            </div>
+            <button class="btn primary-btn full-width" onclick="calc503020()">Calculate</button>
+            <div id="law-50-result" class="mt-4" style="display:none;">
+                <div class="position-row highlight"><span>Needs (50%)</span><strong id="law-res-needs">₹0</strong></div>
+                <p class="text-sm text-muted mb-2">Rent, groceries, utilities, insurance.</p>
+                <div class="position-row highlight"><span>Wants (30%)</span><strong id="law-res-wants">₹0</strong></div>
+                <p class="text-sm text-muted mb-2">Dining out, entertainment, shopping.</p>
+                <div class="position-row highlight"><span>Savings (20%)</span><strong id="law-res-savings">₹0</strong></div>
+                <p class="text-sm text-muted">Investments, emergency fund, debt payoff.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Law: Rule of 72 Modal -->
+    <div id="modal-law-72" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-law-72')">&times;</span>
+            <h3>The Rule of 72</h3>
+            <p class="text-sm text-muted mb-3">Enter your expected annual return to see how long it takes to double your money.</p>
+            <div class="form-group">
+                <label>Expected Annual Return (%)</label>
+                <input type="number" id="law-72-input" placeholder="e.g., 12" value="12">
+            </div>
+            <button class="btn primary-btn full-width" onclick="calcRule72()">Calculate</button>
+            <div id="law-72-result" class="mt-4 text-center p-3 bg-light rounded" style="display:none;">
+                <p class="text-muted">Your money will double in approximately</p>
+                <h2 id="law-res-72" class="text-primary mt-2 text-xl">0 Years</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Law: 4% Rule Modal -->
+    <div id="modal-law-4percent" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-law-4percent')">&times;</span>
+            <h3>The 4% Rule</h3>
+            <p class="text-sm text-muted mb-3">Enter your estimated monthly living expenses in retirement.</p>
+            <div class="form-group">
+                <label>Monthly Expenses (₹)</label>
+                <input type="number" id="law-4-input" placeholder="e.g., 40000">
+            </div>
+            <button class="btn primary-btn full-width" onclick="calc4Percent()">Calculate</button>
+            <div id="law-4-result" class="mt-4 text-center p-3 bg-light rounded" style="display:none;">
+                <p class="text-muted">Your target retirement portfolio is</p>
+                <h2 id="law-res-4" class="text-success mt-2 text-xl">₹0</h2>
+                <p class="text-sm text-muted mt-2">You can safely withdraw 4% of this amount every year without running out of money.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
